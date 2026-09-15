@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Education for everyone</title>
+  <desc id="desc">Students learning and participating in educational service.</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#f0b24d"/>
+      <stop offset="100%" stop-color="#d97925"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg2)"/>
+  <rect x="120" y="220" width="260" height="260" rx="24" fill="#fff6e3" opacity="0.9"/>
+  <rect x="470" y="180" width="260" height="300" rx="24" fill="#f9eac8" opacity="0.9"/>
+  <rect x="820" y="220" width="260" height="260" rx="24" fill="#fff6e3" opacity="0.9"/>
+  <path d="M200 510 L380 510 L300 660 L120 660 Z" fill="#7b4b11" opacity="0.75"/>
+  <path d="M540 510 L730 510 L650 660 L460 660 Z" fill="#7c3f16" opacity="0.7"/>
+  <path d="M890 510 L1080 510 L1000 660 L810 660 Z" fill="#784915" opacity="0.7"/>
+  <text x="600" y="390" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="700">Education</text>
+  <text x="600" y="470" text-anchor="middle" fill="#fff9ef" font-family="Arial, Helvetica, sans-serif" font-size="52">For Everyone</text>
+</svg>

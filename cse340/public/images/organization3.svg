@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Healthy communities</title>
+  <desc id="desc">People supporting health and wellness in the community.</desc>
+  <defs>
+    <linearGradient id="bg3" x1="0" x2="1">
+      <stop offset="0%" stop-color="#4caf93"/>
+      <stop offset="100%" stop-color="#2b8a5b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg3)"/>
+  <circle cx="260" cy="250" r="70" fill="#f6f4d9"/>
+  <circle cx="440" cy="250" r="70" fill="#e8f6d7"/>
+  <circle cx="620" cy="250" r="70" fill="#f6f4d9"/>
+  <circle cx="800" cy="250" r="70" fill="#e8f6d7"/>
+  <rect x="170" y="350" width="830" height="180" rx="22" fill="#ebfff5" opacity="0.9"/>
+  <path d="M160 560 L1040 560 L892 700 L300 700 Z" fill="#1d5b46" opacity="0.75"/>
+  <text x="600" y="420" text-anchor="middle" fill="#0d3f31" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700">Healthy</text>
+  <text x="600" y="500" text-anchor="middle" fill="#0d3f31" font-family="Arial, Helvetica, sans-serif" font-size="54">Communities</text>
+</svg>

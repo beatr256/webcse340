@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Community support organization</title>
+  <desc id="desc">Stylized volunteers helping the community.</desc>
+  <defs>
+    <linearGradient id="bg1" x1="0" x2="1">
+      <stop offset="0%" stop-color="#2b7a78"/>
+      <stop offset="100%" stop-color="#3a86b9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg1)"/>
+  <circle cx="220" cy="200" r="70" fill="#f3d9b1"/>
+  <circle cx="360" cy="200" r="70" fill="#f7e7d0"/>
+  <circle cx="500" cy="200" r="70" fill="#f3d9b1"/>
+  <rect x="160" y="290" width="420" height="200" rx="20" fill="#d9f1f1" opacity="0.9"/>
+  <rect x="640" y="250" width="270" height="240" rx="24" fill="#ffffff" opacity="0.2"/>
+  <path d="M640 520 L1010 520 L870 660 L520 660 Z" fill="#1a4d5a" opacity="0.7"/>
+  <path d="M180 540 L480 540 L410 660 L110 660 Z" fill="#234b62" opacity="0.8"/>
+  <text x="600" y="420" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700">Community</text>
+  <text x="600" y="500" text-anchor="middle" fill="#eaf7ff" font-family="Arial, Helvetica, sans-serif" font-size="52">Support</text>
+</svg>
