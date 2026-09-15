@@ -9,51 +9,19 @@
 </section>
 
 <section class="card-grid organization-grid">
+  <% organizations.forEach((organization) => { %>
+    <article class="card organization-card">
+      <img
+        src="/images/<%= organization.image_file %>"
+        alt="Service activity for <%= organization.organization_name %>"
+      >
 
-  <article class="card organization-card">
-    <img
-      src="/images/organization1.svg"
-      alt="Volunteers working together on a community service project"
-    >
-
-    <div class="card-content">
-      <h2>Community Support Organization</h2>
-      <p>
-        Supports local communities through volunteer activities
-        and service projects.
-      </p>
-    </div>
-  </article>
-
-  <article class="card organization-card">
-    <img
-      src="/images/organization2.svg"
-      alt="People participating in an educational service activity"
-    >
-
-    <div class="card-content">
-      <h2>Education for Everyone</h2>
-      <p>
-        Provides educational support and learning opportunities
-        for community members.
-      </p>
-    </div>
-  </article>
-
-  <article class="card organization-card">
-    <img
-      src="/images/organization3.svg"
-      alt="Volunteers helping people in their community"
-    >
-
-    <div class="card-content">
-      <h2>Healthy Communities</h2>
-      <p>
-        Helps communities improve health and wellness through
-        service and outreach programs.
-      </p>
-    </div>
-  </article>
+      <div class="card-content">
+        <h2><%= organization.organization_name %></h2>
+        <p><%= organization.organization_description %></p>
+      </div>
+    </article>
+  <% }) %>
 
 </section>
 

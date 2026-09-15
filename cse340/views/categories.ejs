@@ -9,34 +9,11 @@
 </section>
 
 <section class="card-grid">
-
-  <article class="card">
-    <h2>Environmental</h2>
-    <p>
-      Projects focused on protecting and improving the environment.
-    </p>
-  </article>
-
-  <article class="card">
-    <h2>Educational</h2>
-    <p>
-      Projects that support learning, teaching, and educational development.
-    </p>
-  </article>
-
-  <article class="card">
-    <h2>Community Service</h2>
-    <p>
-      Projects that help strengthen and support local communities.
-    </p>
-  </article>
-
-  <article class="card">
-    <h2>Health and Wellness</h2>
-    <p>
-      Projects that promote health, wellness, and healthy communities.
-    </p>
-  </article>
+  <% categories.forEach((category) => { %>
+    <article class="card">
+      <h2><%= category.category_name %></h2>
+    </article>
+  <% }) %>
 
 </section>
 

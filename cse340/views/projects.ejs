@@ -8,30 +8,14 @@
 </section>
 
 <section class="card-grid">
-
-  <article class="card">
-    <h2>Community Cleanup</h2>
-    <p>
-      Help clean and improve public spaces in the community.
-    </p>
-    <a href="/categories">Explore Categories</a>
-  </article>
-
-  <article class="card">
-    <h2>Educational Support</h2>
-    <p>
-      Support students through tutoring and educational activities.
-    </p>
-    <a href="/categories">Explore Categories</a>
-  </article>
-
-  <article class="card">
-    <h2>Community Outreach</h2>
-    <p>
-      Participate in activities that support individuals and families.
-    </p>
-    <a href="/categories">Explore Categories</a>
-  </article>
+  <% projects.forEach((project) => { %>
+    <article class="card">
+      <h2><%= project.project_name %></h2>
+      <p><%= project.project_description %></p>
+      <p>Organization: <%= project.organization_name %></p>
+      <a href="/categories">Explore Categories</a>
+    </article>
+  <% }) %>
 
 </section>
 

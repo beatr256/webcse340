@@ -1,5 +1,8 @@
 import express from "express"
 import dotenv from "dotenv"
+import { getCategories } from "./src/models/categories.js"
+import { getOrganizations } from "./src/models/organizations.js"
+import { getProjects } from "./src/models/projects.js"
 
 dotenv.config()
 
@@ -18,21 +21,18 @@ app.get("/", async (req, res) => {
 })
 
 app.get("/organizations", async (req, res) => {
-  res.render("organizations", {
-    title: "Organizations"
-  })
+  const organizations = await getOrganizations()
+  res.render("organizations", { title: "Organizations", organizations })
 })
 
 app.get("/projects", async (req, res) => {
-  res.render("projects", {
-    title: "Service Projects"
-  })
+  const projects = await getProjects()
+  res.render("projects", { title: "Service Projects", projects })
 })
 
 app.get("/categories", async (req, res) => {
-  res.render("categories", {
-    title: "Service Project Categories"
-  })
+  const categories = await getCategories()
+  res.render("categories", { title: "Service Project Categories", categories })
 })
 
 app.listen(port, () => {
