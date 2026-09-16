@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000
 
 app.set("view engine", "ejs")
 app.set("views", "./views")
+app.locals.currentYear = new Date().getFullYear()
 
 app.use(express.static("public"))
 

@@ -1,0 +1,88 @@
+Coaching Session Transcript
+AI Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say “I don’t know” or “I made a mistake.” That’s the fastest way we’ll learn today. What is your name?
+
+Hellen Beatrice Apolot: My name is Hellen Beatrice Apolot.
+
+AI Coach: Thanks, Hellen. Let’s begin with relational databases. Could you paste a snippet of your SQL table definition?
+
+Hellen:
+
+sql
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY,
+    title VARCHAR(100),
+    credits INT
+);
+
+CREATE TABLE Enrollments (
+    student_id INT,
+    course_id INT,
+    grade CHAR(2),
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+This design shows a many-to-many relationship between students and courses, managed by the Enrollments table.
+
+🔹 Topic 1: Relational Database Design
+AI Coach: What’s the purpose of the Enrollments table in your design?
+
+Hellen: It connects students to courses. A student can enroll in many courses, and each course can have many students. The table also stores the grade.
+
+🔹 Topic 2: Server-Side Data Access Logic (Node.js)
+AI Coach: Great. Now, can you share a Node.js function that retrieves data from your database?
+
+Hellen:
+
+js
+const getStudentCourses = async (studentId) => {
+    const query = `
+        SELECT c.title, e.grade
+        FROM Enrollments e
+        JOIN Courses c ON e.course_id = c.course_id
+        WHERE e.student_id = $1
+    `;
+    const result = await db.query(query, [studentId]);
+    return result.rows;
+};
+This function queries the database for all courses a student is enrolled in, along with their grade.
+
+🔹 Topic 3: Express Server Logic and Routing
+AI Coach: Nice. How do you expose that function in your Express server?
+
+Hellen:
+
+js
+app.get("/students/:id/courses", async (req, res) => {
+    const studentId = req.params.id;
+    const courses = await getStudentCourses(studentId);
+    res.render("studentCourses", { courses });
+});
+This route listens for requests at /students/:id/courses, retrieves the data, and passes it to the EJS template.
+
+🔹 Topic 4: Client-Side Rendering (EJS Templates)
+AI Coach: Can you show me how the EJS template displays that data?
+
+Hellen:
+
+ejs
+<h1>Student Courses</h1>
+<ul>
+  <% courses.forEach(course => { %>
+    <li><%= course.title %> - Grade: <%= course.grade %></li>
+  <% }) %>
+</ul>
+This loops through the courses array and displays each course title with the grade.
+
+🔹 Reflection
+AI Coach: Which of these four areas do you feel most confident about now?
+
+Hellen: I feel most confident about Express routing, because I understand how to connect routes to functions and templates.
+
+AI Coach: Excellent. That completes our coaching session.
