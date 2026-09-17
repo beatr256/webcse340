@@ -1,0 +1,84 @@
+W03 Coaching Session Transcript
+AI Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say “I don’t know” or “I made a mistake.” That’s the fastest way we’ll learn today. What is your name?
+
+Hellen Beatrice Apolot: My name is Hellen Beatrice Apolot.
+
+AI Coach: Thanks, Hellen. Let’s begin with the Model. Could you paste a snippet of your model function that accepts a parameter and includes it in an SQL query?
+
+Hellen:
+
+js
+async function getProjectsByCategory(category) {
+    const query = `
+        SELECT p.project_id, p.name, o.organization_name
+        FROM Projects p
+        JOIN Organizations o ON p.org_id = o.org_id
+        WHERE p.category = $1
+    `;
+    const result = await db.query(query, [category]);
+    return result.rows;
+}
+This function retrieves projects filtered by category. The parameter $1 ensures safe query execution and prevents SQL injection.
+
+🔹 Topic 1: Models
+AI Coach: Why did you choose to use a JOIN in this query?
+
+Hellen: Because the project data and organization names are stored in separate tables. The JOIN combines them so I can return both project and organization information together.
+
+🔹 Topic 2: Views
+AI Coach: Great. Now let’s look at the View. Can you share an EJS snippet that inserts data into a link?
+
+Hellen:
+
+ejs
+<ul>
+  <% projects.forEach(project => { %>
+    <li>
+      <a href="/project/<%= project.project_id %>"><%= project.name %></a> -
+      <a href="/organization/<%= project.org_id %>"><%= project.organization_name %></a>
+    </li>
+  <% }) %>
+</ul>
+This snippet loops through projects and creates links to both the project and its organization using dynamic values.
+
+🔹 Topic 3: Controllers
+AI Coach: Nice. How do you handle routing in your controller with a route parameter?
+
+Hellen:
+
+js
+app.get("/project/:id", async (req, res) => {
+    const projectId = req.params.id;
+    const project = await getProjectById(projectId);
+    if (project) {
+        res.render("projectDetail", { project });
+    } else {
+        res.status(404).render("404");
+    }
+});
+This controller uses a route parameter :id to fetch a specific project. If the project doesn’t exist, it sends a 404 page.
+
+🔹 Topic 4: Error Handling
+AI Coach: Finally, how do you handle errors in your application?
+
+Hellen:
+
+js
+// 404 handler
+app.use((req, res) => {
+    res.status(404).render("404");
+});
+
+// 500 handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render("500");
+});
+I use middleware to catch errors. The first handles unknown routes with a 404 page, and the second catches server errors with a 500 page.
+
+🔹 Reflection
+AI Coach: Which of these four areas do you feel most confident about now?
+
+Hellen: I feel most confident about Controllers, because I understand how route parameters connect the model and view together.
+
+AI Coach: Excellent. That completes our coaching session.
