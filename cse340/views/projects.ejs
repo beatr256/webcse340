@@ -10,12 +10,11 @@
 <section class="card-grid">
   <% projects.forEach((project) => { %>
     <article class="card">
-      <h2><%= project.project_name %></h2>
+      <h2><a href="/project/<%= project.project_id %>"><%= project.project_name %></a></h2>
       <p><%= project.project_description %></p>
-      <p>Organization: <%= project.organization_name %></p>
+      <p>Organization: <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a></p>
       <p>Location: <%= project.project_location %></p>
       <p>Date: <%= new Date(project.project_date).toLocaleDateString() %></p>
-      <a href="/categories">Explore Categories</a>
     </article>
   <% }) %>
 

@@ -175,6 +175,34 @@ main {
   font-weight: bold;
 }
 
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: 2rem;
+}
+
+.link-list {
+  display: grid;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.tag-list {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  background-color: #dff3f8;
+  border: 1px solid #9ecbd5;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 .organization-card {
   padding: 0;
   overflow: hidden;
@@ -212,6 +240,10 @@ main {
   }
 
   .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-layout {
     grid-template-columns: 1fr;
   }
 

@@ -17,7 +17,7 @@
       >
 
       <div class="card-content">
-        <h2><%= organization.organization_name %></h2>
+        <h2><a href="/organization/<%= organization.organization_id %>"><%= organization.organization_name %></a></h2>
         <p><%= organization.organization_description %></p>
         <p>Contact: <a href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a></p>
       </div>
