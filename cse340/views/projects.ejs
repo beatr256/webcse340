@@ -15,7 +15,6 @@
       <p>Organization: <%= project.organization_name %></p>
       <p>Location: <%= project.project_location %></p>
       <p>Date: <%= new Date(project.project_date).toLocaleDateString() %></p>
-      <p>Time: <%= project.project_time.slice(0, 5) %></p>
       <a href="/categories">Explore Categories</a>
     </article>
   <% }) %>
