@@ -141,6 +141,8 @@ SELECT p.project_id, c.category_id
 FROM projects p
 JOIN organizations o ON o.organization_id = p.organization_id
 JOIN categories c ON c.category_name = CASE
+  WHEN p.project_name IN ('Community Cleanup', 'Neighborhood Garden')
+    THEN 'Environmental'
   WHEN o.organization_name = 'Education for Everyone' THEN 'Educational'
   WHEN o.organization_name = 'Healthy Communities' THEN 'Health and Wellness'
   ELSE 'Community Service'
