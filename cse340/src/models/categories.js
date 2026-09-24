@@ -17,6 +17,27 @@ export const getCategoryById = async (categoryId) => {
   return rows[0]
 }
 
+export const createCategory = async (categoryName) => {
+  const { rows } = await pool.query(
+    "INSERT INTO categories (category_name) VALUES ($1) RETURNING category_id",
+    [categoryName]
+  )
+
+  return rows[0]
+}
+
+export const updateCategory = async (categoryId, categoryName) => {
+  const { rows } = await pool.query(
+    `UPDATE categories
+     SET category_name = $1
+     WHERE category_id = $2
+     RETURNING category_id, category_name`,
+    [categoryName, categoryId]
+  )
+
+  return rows[0]
+}
+
 export const getProjectsByCategoryId = async (categoryId) => {
   const { rows } = await pool.query(
     `SELECT p.project_id, p.project_name, p.project_date,

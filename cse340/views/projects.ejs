@@ -5,6 +5,7 @@
   <p>
     Find opportunities to serve your community and make a difference.
   </p>
+  <a href="/new-project" class="button">Create Service Project</a>
 </section>
 
 <section class="card-grid">
@@ -15,6 +16,7 @@
       <p>Organization: <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a></p>
       <p>Location: <%= project.project_location %></p>
       <p>Date: <%= new Date(project.project_date).toLocaleDateString() %></p>
+      <a href="/edit-project/<%= project.project_id %>">Edit project</a>
     </article>
   <% }) %>
 

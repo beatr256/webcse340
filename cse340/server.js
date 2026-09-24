@@ -12,6 +12,7 @@ app.set("views", "./views")
 app.locals.currentYear = new Date().getFullYear()
 
 app.use(express.static("public"))
+app.use(express.urlencoded({ extended: false }))
 
 app.get("/", async (req, res) => {
   res.render("index", {

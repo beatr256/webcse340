@@ -1,0 +1,33 @@
+<%- include("partials/header") %>
+
+<section class="page-heading">
+  <h1><%= heading %></h1>
+</section>
+
+<section class="form-section">
+  <% if (errors.length) { %>
+    <div class="form-errors" role="alert">
+      <ul>
+        <% errors.forEach((error) => { %>
+          <li><%= error %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form class="form-card" action="<%= formAction %>" method="post">
+    <label for="category_name">Category name</label>
+    <input
+      id="category_name"
+      name="category_name"
+      type="text"
+      value="<%= category.category_name %>"
+      maxlength="100"
+      required
+    >
+    <button class="button" type="submit">Save category</button>
+    <a class="button button-secondary" href="/categories">Cancel</a>
+  </form>
+</section>
+
+<%- include("partials/footer") %>
