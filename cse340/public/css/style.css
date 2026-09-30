@@ -63,6 +63,25 @@ a {
   text-decoration: underline;
 }
 
+.nav-logout {
+  display: inline-flex;
+}
+
+.nav-logout button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #155e75;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-logout button:hover,
+.nav-logout button:focus {
+  text-decoration: underline;
+}
+
 /* Main */
 
 main {
@@ -308,4 +327,96 @@ main {
   border-left: 4px solid #b42318;
   background-color: #fef3f2;
   color: #7a271a;
+}
+
+.form-submit {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.form-card p {
+  margin-top: 0.5rem;
+}
+
+.form-errors,
+.flash-message {
+  max-width: 620px;
+  margin: 1rem auto;
+  padding: 0.85rem 1rem;
+  border: 1px solid #b42318;
+  background: #fff1f0;
+  color: #7a271a;
+}
+
+.flash-message {
+  border-color: #7b9e89;
+  background: #edf7ef;
+  color: #244c32;
+}
+
+.form-errors {
+  padding-left: 2rem;
+}
+
+.dashboard-section {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.account-details {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 auto 1.5rem;
+  max-width: 560px;
+}
+
+.account-details div {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1rem;
+  border-bottom: 1px solid #d9e2ec;
+  padding: 0.75rem 0;
+}
+
+.account-details dt {
+  font-weight: 700;
+}
+
+.account-details dd {
+  overflow-wrap: anywhere;
+}
+
+.admin-link {
+  text-align: center;
+}
+
+.users-section {
+  padding-top: 0;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid #d9e2ec;
+  background: #fff;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #d9e2ec;
+}
+
+.users-table th {
+  background: #eaf3f4;
+}
+
+.users-table tbody tr:last-child td {
+  border-bottom: 0;
 }

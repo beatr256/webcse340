@@ -3,6 +3,17 @@ DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS organizations;
 
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  user_id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'user'
+    CHECK (role IN ('user', 'admin'))
+);
+
 CREATE TABLE organizations (
   organization_id SERIAL PRIMARY KEY,
   organization_name VARCHAR(100) NOT NULL UNIQUE,

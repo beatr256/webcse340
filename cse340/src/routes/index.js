@@ -9,8 +9,18 @@ import {
 } from "../controllers/categories.js"
 import { organizationDetail, organizationList, createOrganizationController, editOrganization, newOrganization, updateOrganizationController } from "../controllers/organizations.js"
 import { projectDetail, projectList, createProjectController, editProject, newProject, updateProjectController } from "../controllers/projects.js"
+import { dashboard, login, logout, register, showLogin, showRegister, usersPage } from "../controllers/auth.js"
+import { requireLogin, requireRole } from "../middleware/auth.js"
 
 const router = Router()
+
+router.get("/register", showRegister)
+router.post("/register", register)
+router.get("/login", showLogin)
+router.post("/login", login)
+router.post("/logout", logout)
+router.get("/dashboard", requireLogin, dashboard)
+router.get("/users", requireLogin, requireRole("admin"), usersPage)
 
 router.get("/organizations", organizationList)
 router.get("/organization/:id", organizationDetail)

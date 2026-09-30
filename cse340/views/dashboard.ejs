@@ -1,0 +1,21 @@
+<%- include("partials/header") %>
+
+<section class="page-heading">
+  <h1>Dashboard</h1>
+  <p>Welcome, <%= currentUser.name %>.</p>
+</section>
+
+<section class="content-section dashboard-section">
+  <h2>Your Account</h2>
+  <dl class="account-details">
+    <div><dt>Name</dt><dd><%= currentUser.name %></dd></div>
+    <div><dt>Email</dt><dd><%= currentUser.email %></dd></div>
+    <div><dt>Role</dt><dd><%= currentUser.role %></dd></div>
+  </dl>
+
+  <% if (currentUser.role === "admin") { %>
+    <p class="admin-link"><a class="button" href="/users">View Registered Users</a></p>
+  <% } %>
+</section>
+
+<%- include("partials/footer") %>
