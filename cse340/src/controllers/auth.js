@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs"
+import { promisify } from "node:util"
 import { createUser, findUserByEmail, listUsers } from "../models/users.js"
 
 const stringField = (value) => typeof value === "string" ? value : ""
@@ -54,28 +55,22 @@ export const login = async (req, res) => {
     })
   }
 
-  await new Promise((resolve, reject) => {
-    req.session.regenerate((error) => error ? reject(error) : resolve())
-  })
+  await promisify(req.session.regenerate).call(req.session)
   req.session.user = {
     user_id: user.user_id,
     name: user.name,
     email: user.email,
     role: user.role,
   }
-  await new Promise((resolve, reject) => {
-    req.session.save((error) => error ? reject(error) : resolve())
-  })
+  await promisify(req.session.save).call(req.session)
 
   return res.redirect("/dashboard")
 }
 
-export const logout = (req, res, next) => {
-  req.session.destroy((error) => {
-    if (error) return next(error)
-    res.clearCookie("connect.sid")
-    return res.redirect("/")
-  })
+export const logout = async (req, res) => {
+  await promisify(req.session.destroy).call(req.session)
+  res.clearCookie("connect.sid")
+  return res.redirect("/")
 }
 
 export const dashboard = (req, res) => res.render("dashboard", { title: "Dashboard" })

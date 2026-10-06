@@ -6,7 +6,9 @@
     Discover organizations working to improve communities
     through service.
   </p>
-  <a href="/new-organization" class="button">Create Organization</a>
+  <% if (currentUser?.role === "admin") { %>
+    <a href="/new-organization" class="button">Create Organization</a>
+  <% } %>
 </section>
 
 <section class="card-grid organization-grid">
@@ -21,7 +23,9 @@
         <h2><a href="/organization/<%= organization.organization_id %>"><%= organization.organization_name %></a></h2>
         <p><%= organization.organization_description %></p>
         <p>Contact: <a href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a></p>
-        <a href="/edit-organization/<%= organization.organization_id %>">Edit organization</a>
+        <% if (currentUser?.role === "admin") { %>
+          <a href="/edit-organization/<%= organization.organization_id %>">Edit organization</a>
+        <% } %>
       </div>
     </article>
   <% }) %>
