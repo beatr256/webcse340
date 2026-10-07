@@ -8,7 +8,7 @@ import {
 	updateCategoryController,
 } from "../controllers/categories.js"
 import { organizationDetail, organizationList, createOrganizationController, editOrganization, newOrganization, updateOrganizationController } from "../controllers/organizations.js"
-import { projectDetail, projectList, createProjectController, editProject, newProject, updateProjectController } from "../controllers/projects.js"
+import { projectDetail, projectList, createProjectController, editProject, newProject, updateProjectController, volunteerForProject, removeVolunteerFromProject, removeVolunteerFromDashboard } from "../controllers/projects.js"
 import { dashboard, login, logout, register, showLogin, showRegister, usersPage } from "../controllers/auth.js"
 import { requireLogin, requireRole } from "../middleware/auth.js"
 
@@ -30,6 +30,9 @@ router.get("/edit-organization/:id", requireLogin, requireRole("admin"), editOrg
 router.post("/edit-organization/:id", requireLogin, requireRole("admin"), updateOrganizationController)
 router.get("/projects", projectList)
 router.get("/project/:id", projectDetail)
+router.post("/project/:id/volunteer", requireLogin, volunteerForProject)
+router.post("/project/:id/unvolunteer", requireLogin, removeVolunteerFromProject)
+router.post("/dashboard/volunteers/:id/remove", requireLogin, removeVolunteerFromDashboard)
 router.get("/new-project", requireLogin, requireRole("admin"), newProject)
 router.post("/new-project", requireLogin, requireRole("admin"), createProjectController)
 router.get("/edit-project/:id", requireLogin, requireRole("admin"), editProject)

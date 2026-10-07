@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS project_categories;
+DROP TABLE IF EXISTS project_volunteers;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS organizations;
@@ -35,6 +36,14 @@ CREATE TABLE projects (
   project_date DATE NOT NULL,
   organization_id INTEGER NOT NULL REFERENCES organizations(organization_id)
     ON DELETE CASCADE
+);
+
+CREATE TABLE project_volunteers (
+  user_id INTEGER NOT NULL REFERENCES users(user_id)
+    ON DELETE CASCADE,
+  project_id INTEGER NOT NULL REFERENCES projects(project_id)
+    ON DELETE CASCADE,
+  PRIMARY KEY (user_id, project_id)
 );
 
 CREATE TABLE project_categories (

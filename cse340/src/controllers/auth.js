@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs"
 import { promisify } from "node:util"
 import { createUser, findUserByEmail, listUsers } from "../models/users.js"
+import { getVolunteerProjects } from "../models/volunteers.js"
 
 const stringField = (value) => typeof value === "string" ? value : ""
 
@@ -73,7 +74,10 @@ export const logout = async (req, res) => {
   return res.redirect("/")
 }
 
-export const dashboard = (req, res) => res.render("dashboard", { title: "Dashboard" })
+export const dashboard = async (req, res) => {
+  const volunteerProjects = await getVolunteerProjects(req.session.user.user_id)
+  return res.render("dashboard", { title: "Dashboard", volunteerProjects })
+}
 
 export const usersPage = async (req, res) => {
   const users = await listUsers()

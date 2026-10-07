@@ -5,6 +5,7 @@ import connectPgSimple from "connect-pg-simple"
 import routes from "./src/routes/index.js"
 import pool from "./src/database/index.js"
 import { ensureAdminUser } from "./src/models/users.js"
+import { ensureVolunteerTable } from "./src/models/volunteers.js"
 
 dotenv.config()
 
@@ -57,7 +58,10 @@ app.use((error, req, res, next) => {
 })
 
 const startServer = async () => {
-  if (process.env.DATABASE_URL) await ensureAdminUser()
+  if (process.env.DATABASE_URL) {
+    await ensureAdminUser()
+    await ensureVolunteerTable()
+  }
 
   app.listen(port, () => {
     console.log(`Server running on port ${port}`)

@@ -266,6 +266,11 @@ main {
     grid-template-columns: 1fr;
   }
 
+  .volunteer-project-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .hero {
     padding: 3rem 1.5rem;
   }
@@ -362,6 +367,41 @@ main {
 .dashboard-section {
   max-width: 720px;
   margin: 0 auto;
+}
+
+.volunteer-project-list {
+  list-style: none;
+  padding: 0;
+}
+
+.volunteer-project-list li {
+  border-bottom: 1px solid #d9e2ec;
+  padding: 1rem 0;
+}
+
+.volunteer-project-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.volunteer-project-heading p {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+}
+
+.volunteer-project-heading form {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.volunteer-action-section {
+  text-align: center;
+}
+
+.volunteer-action-section form {
+  margin: 0.75rem 0 0;
 }
 
 .account-details {

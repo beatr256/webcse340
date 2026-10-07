@@ -8,6 +8,21 @@
   <% } %>
 </section>
 
+<% if (currentUser) { %>
+  <section class="content-section volunteer-action-section">
+    <% if (isVolunteering) { %>
+      <p role="status">You are volunteering for this project.</p>
+      <form action="/project/<%= project.project_id %>/unvolunteer" method="post">
+        <button class="button button-secondary form-submit" type="submit">Remove me from this project</button>
+      </form>
+    <% } else { %>
+      <form action="/project/<%= project.project_id %>/volunteer" method="post">
+        <button class="button form-submit" type="submit">Volunteer for this project</button>
+      </form>
+    <% } %>
+  </section>
+<% } %>
+
 <section class="content-section detail-layout">
   <div class="card">
     <p>Organization: <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a></p>

@@ -7,6 +7,7 @@ import {
 } from "../models/projects.js"
 import { getOrganizations } from "../models/organizations.js"
 import { getCategories } from "../models/categories.js"
+import { addVolunteer, isVolunteer, removeVolunteer } from "../models/volunteers.js"
 
 const projectFields = (body) => ({
   project_name: body.project_name?.trim() ?? "",
@@ -51,8 +52,29 @@ export const projectDetail = async (req, res) => {
   }
 
   const categories = await getCategoriesByProjectId(projectId)
-  return res.render("project-detail", { title: project.project_name, project, categories })
+  const isVolunteering = req.session.user
+    ? await isVolunteer(req.session.user.user_id, projectId)
+    : false
+  return res.render("project-detail", { title: project.project_name, project, categories, isVolunteering })
 }
+
+const updateVolunteerStatus = async (req, res, update, redirectPath) => {
+  const projectId = Number.parseInt(req.params.id, 10)
+  const project = Number.isInteger(projectId) ? await getProjectById(projectId) : null
+  if (!project) return res.status(404).render("errors/404", { title: "Project Not Found" })
+
+  await update(req.session.user.user_id, projectId)
+  return res.redirect(typeof redirectPath === "function" ? redirectPath(projectId) : redirectPath)
+}
+
+export const volunteerForProject = async (req, res) =>
+  updateVolunteerStatus(req, res, addVolunteer, (projectId) => `/project/${projectId}`)
+
+export const removeVolunteerFromProject = async (req, res) =>
+  updateVolunteerStatus(req, res, removeVolunteer, (projectId) => `/project/${projectId}`)
+
+export const removeVolunteerFromDashboard = async (req, res) =>
+  updateVolunteerStatus(req, res, removeVolunteer, "/dashboard")
 
 export const newProject = async (req, res) => res.render("project-form", await formData({ project_name: "", project_description: "", project_location: "", project_date: "", organization_id: "" }, []))
 

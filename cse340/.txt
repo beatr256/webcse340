@@ -1,88 +1,217 @@
-Coaching Session Transcript
+W05 Coaching Session Transcript
+
 AI Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say “I don’t know” or “I made a mistake.” That’s the fastest way we’ll learn today. What is your name?
 
 Hellen Beatrice Apolot: My name is Hellen Beatrice Apolot.
 
-AI Coach: Thanks, Hellen. Let’s begin with relational databases. Could you paste a snippet of your SQL table definition?
+AI Coach: Thanks, Hellen. This is a safe learning space, so we can take our time and work through anything that is unclear. Let’s begin with registration and password hashing. Could you paste a relevant snippet of your registration code that creates a user and hashes the password?
 
 Hellen:
 
-sql
-CREATE TABLE Students (
-    student_id INT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100)
-);
+const bcrypt = require("bcrypt");
 
-CREATE TABLE Courses (
-    course_id INT PRIMARY KEY,
-    title VARCHAR(100),
-    credits INT
-);
+app.post("/account/register", async (req, res) => {
+    const { first_name, last_name, email, password } = req.body;
 
-CREATE TABLE Enrollments (
-    student_id INT,
-    course_id INT,
-    grade CHAR(2),
-    PRIMARY KEY (student_id, course_id),
-    FOREIGN KEY (student_id) REFERENCES Students(student_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
-);
-This design shows a many-to-many relationship between students and courses, managed by the Enrollments table.
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-🔹 Topic 1: Relational Database Design
-AI Coach: What’s the purpose of the Enrollments table in your design?
+    await db.query(
+        `INSERT INTO account
+        (account_firstname, account_lastname, account_email, account_password)
+        VALUES ($1, $2, $3, $4)`,
+        [first_name, last_name, email, hashedPassword]
+    );
 
-Hellen: It connects students to courses. A student can enroll in many courses, and each course can have many students. The table also stores the grade.
-
-🔹 Topic 2: Server-Side Data Access Logic (Node.js)
-AI Coach: Great. Now, can you share a Node.js function that retrieves data from your database?
-
-Hellen:
-
-js
-const getStudentCourses = async (studentId) => {
-    const query = `
-        SELECT c.title, e.grade
-        FROM Enrollments e
-        JOIN Courses c ON e.course_id = c.course_id
-        WHERE e.student_id = $1
-    `;
-    const result = await db.query(query, [studentId]);
-    return result.rows;
-};
-This function queries the database for all courses a student is enrolled in, along with their grade.
-
-🔹 Topic 3: Express Server Logic and Routing
-AI Coach: Nice. How do you expose that function in your Express server?
-
-Hellen:
-
-js
-app.get("/students/:id/courses", async (req, res) => {
-    const studentId = req.params.id;
-    const courses = await getStudentCourses(studentId);
-    res.render("studentCourses", { courses });
+    req.flash("notice", "Registration successful. Please log in.");
+    res.redirect("/account/login");
 });
-This route listens for requests at /students/:id/courses, retrieves the data, and passes it to the EJS template.
 
-🔹 Topic 4: Client-Side Rendering (EJS Templates)
-AI Coach: Can you show me how the EJS template displays that data?
+This code gets the information submitted by the user and creates a new account. The password is hashed using bcrypt before it is stored in the database. This is important because the actual password should not be stored as plain text.
+
+Topic 1: Registration and Password Hashing
+
+AI Coach: What is the purpose of hashing the password before storing it in the users table?
+
+Hellen: Hashing protects the user's password. Instead of saving the actual password in the database, the application saves a hashed version. If someone gets access to the database, they should not be able to simply read the user's original password. I use bcrypt to create the hash before inserting the user into the database.
+
+AI Coach: Why would storing the user's original password instead of a hash be a security problem?
+
+Hellen: It would be dangerous because anyone who gained access to the database could see the users' actual passwords. Users sometimes use the same password on different websites, so exposing the original password could cause more problems. Hashing makes the stored password much safer.
+
+AI Coach: How does the registration code make sure the database receives the hashed password rather than the original password?
+
+Hellen: The code first gets the password from req.body. Then bcrypt.hash() creates a hashed version and stores it in hashedPassword. When the SQL query runs, I pass hashedPassword as the fourth value instead of the original password.
+
+AI Coach: What could happen if you accidentally inserted password instead of hashedPassword into the database?
+
+Hellen: The password would be stored as plain text. That would be a security problem and would defeat the purpose of password hashing.
+
+Topic 2: Login and Sessions
+
+AI Coach: Now let's move to login and sessions. Could you paste a relevant snippet from your login code that checks the password and creates a session?
 
 Hellen:
 
-ejs
-<h1>Student Courses</h1>
+app.post("/account/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    const result = await db.query(
+        "SELECT * FROM account WHERE account_email = $1",
+        [email]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+        req.flash("notice", "Invalid email or password.");
+        return res.redirect("/account/login");
+    }
+
+    const passwordMatch = await bcrypt.compare(
+        password,
+        user.account_password
+    );
+
+    if (!passwordMatch) {
+        req.flash("notice", "Invalid email or password.");
+        return res.redirect("/account/login");
+    }
+
+    req.session.user = {
+        account_id: user.account_id,
+        account_firstname: user.account_firstname,
+        account_type: user.account_type
+    };
+
+    res.redirect("/account/");
+});
+
+This code looks up the account using the email address and then compares the password entered by the user with the hashed password stored in the database. If the password is correct, the user's information is stored in the session.
+
+Topic 2: Login and Sessions
+
+AI Coach: Why do you use bcrypt.compare() instead of comparing the password directly with the value in the database?
+
+Hellen: Because the database contains a hashed password, not the original password. bcrypt.compare() checks whether the password the user entered matches the stored hash without needing to turn the stored hash back into the original password.
+
+AI Coach: What information are you storing in the session after the user successfully logs in?
+
+Hellen: I store information such as the account ID, first name, and account type. The account type is useful because the application can use it to determine what the user is allowed to access.
+
+AI Coach: How does the session help the application remember that the user is logged in?
+
+Hellen: HTTP requests are normally separate from each other, so the session gives the server a way to keep information about the logged-in user between requests. After login, the application can use the session information to recognize the user when they visit other pages.
+
+AI Coach: What would happen if you did not create a session after a successful login?
+
+Hellen: The application would not have a simple way to remember the logged-in user between requests. The user could successfully enter their password, but the next request might look like it came from someone who was not logged in.
+
+Topic 3: Protected Access Middleware
+
+AI Coach: Let's discuss protected access middleware. Could you paste a snippet showing how your requireLogin and requireRole middleware protects routes?
+
+Hellen:
+
+function requireLogin(req, res, next) {
+    if (!req.session.user) {
+        req.flash("notice", "Please log in to access this page.");
+        return res.redirect("/account/login");
+    }
+
+    next();
+}
+
+function requireRole(role) {
+    return (req, res, next) => {
+        if (!req.session.user) {
+            req.flash("notice", "Please log in first.");
+            return res.redirect("/account/login");
+        }
+
+        if (req.session.user.account_type !== role) {
+            req.flash("notice", "You do not have permission to access this page.");
+            return res.redirect("/account/");
+        }
+
+        next();
+    };
+}
+
+I use requireLogin when a page should only be available to logged-in users. I use requireRole when a page should only be available to a specific type of user.
+
+Topic 3: Protected Access Middleware
+
+AI Coach: What is the main difference between requireLogin and requireRole in your application?
+
+Hellen: requireLogin checks whether a user is logged in. It does not necessarily care what type of user they are. requireRole goes further by checking the user's role or account type to make sure they have permission to access a particular resource.
+
+AI Coach: Why does the middleware call next() when the user passes the required checks?
+
+Hellen: next() tells Express that the middleware has finished and that the request can continue to the next middleware or the route handler. If the user does not pass the checks, the middleware redirects them instead of calling next().
+
+AI Coach: How might you use requireRole() on a route that should only be available to an administrator?
+
+Hellen: I could use it as middleware before the route handler, for example:
+
+router.get("/admin", requireRole("Admin"), accountController.admin);
+
+This means the user must be logged in and have the Admin account type before the route can continue.
+
+AI Coach: What security problem could occur if you only hid an administrator page from the navigation but did not protect the route with middleware?
+
+Hellen: A user could still manually type the URL into the browser and possibly access the page. Hiding the link only changes what the user sees. Middleware actually protects the server-side route.
+
+Topic 4: Protected Access Links and Navigation
+
+AI Coach: Now let's look at protected links and navigation. Could you paste an EJS snippet that conditionally displays links based on whether the user is logged in or what role they have?
+
+Hellen:
+
 <ul>
-  <% courses.forEach(course => { %>
-    <li><%= course.title %> - Grade: <%= course.grade %></li>
-  <% }) %>
+    <li><a href="/">Home</a></li>
+
+    <% if (locals.loggedin) { %>
+        <li><a href="/account/">Account</a></li>
+
+        <% if (locals.accountData && locals.accountData.account_type === "Admin") { %>
+            <li><a href="/admin/">Admin</a></li>
+        <% } %>
+
+        <li><a href="/account/logout">Logout</a></li>
+    <% } else { %>
+        <li><a href="/account/login">Login</a></li>
+        <li><a href="/account/register">Register</a></li>
+    <% } %>
 </ul>
-This loops through the courses array and displays each course title with the grade.
 
-🔹 Reflection
-AI Coach: Which of these four areas do you feel most confident about now?
+This code changes the navigation depending on whether someone is logged in. It also only displays the Admin link when the logged-in user's account type is Admin.
 
-Hellen: I feel most confident about Express routing, because I understand how to connect routes to functions and templates.
+Topic 4: Protected Access Links and Navigation
 
-AI Coach: Excellent. That completes our coaching session.
+AI Coach: Why is it useful to hide the Admin link from users who are not administrators?
+
+Hellen: It makes the user interface clearer and prevents regular users from seeing links to features they are not supposed to use. It also makes the application easier to navigate because users only see options that apply to them.
+
+AI Coach: Is hiding the Admin link by itself enough to secure the Admin page?
+
+Hellen: No. Hiding the link is only part of the user interface. Someone could still manually enter the Admin URL. The actual route needs middleware such as requireRole("Admin") to protect it on the server.
+
+AI Coach: How do protected navigation links and protected middleware work together in your application?
+
+Hellen: The navigation controls what links users see, while middleware controls whether they are actually allowed to access the route. For example, an administrator can see the Admin link, but a regular user does not. Even if the regular user manually enters the Admin URL, the middleware should stop them from accessing it.
+
+Reflection
+
+AI Coach: Which of the four topics do you feel you understand best after discussing your code?
+
+Hellen: I feel most confident about login and sessions because I understand how the application checks the user's email and password and then stores information about the logged-in user in the session.
+
+AI Coach: Which concept from this coaching session was most useful for you to understand better?
+
+Hellen: The difference between authentication and authorization was very useful. Authentication is checking who the user is, such as when they log in. Authorization is deciding what that user is allowed to access based on their role. I also understand better why both server-side middleware and protected navigation links are useful.
+
+AI Coach: How would you explain the overall authentication and authorization process in your own words?
+
+Hellen: First, a user can register and their password is hashed before it is stored in the database. When the user logs in, the application finds their account and uses bcrypt to compare the password they entered with the stored hash. If the password is correct, the application creates a session containing information about the user. Middleware can then check the session to make sure the user is logged in and has the correct role before allowing access to protected routes. Finally, the navigation can show or hide links depending on the user's login status and role.
+
+AI Coach: Excellent work, Hellen. We covered registration and password hashing, login and sessions, protected access middleware, and protected access links and navigation. You also shared code for each topic and explained why the code is used. That completes the W05 coaching session.

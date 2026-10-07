@@ -18,4 +18,27 @@
   <% } %>
 </section>
 
+<section class="content-section dashboard-section">
+  <h2>Your Volunteer Projects</h2>
+  <% if (volunteerProjects.length) { %>
+    <ul class="link-list volunteer-project-list">
+      <% volunteerProjects.forEach((project) => { %>
+        <li>
+          <div class="volunteer-project-heading">
+            <div>
+              <a href="/project/<%= project.project_id %>"><%= project.project_name %></a>
+              <p><%= project.organization_name %> | <%= project.project_location %> | <%= new Date(project.project_date).toLocaleDateString() %></p>
+            </div>
+            <form action="/dashboard/volunteers/<%= project.project_id %>/remove" method="post">
+              <button class="button button-secondary form-submit" type="submit">Remove</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>You have not signed up for any service projects yet.</p>
+  <% } %>
+</section>
+
 <%- include("partials/footer") %>
